@@ -25,3 +25,11 @@ export function request(config) {
   // 3.发送真正的网络请求
   return instance(config)
 }
+export function newrequest(config) {
+  const getdata = axios.create({
+    baseURL: "http://123.207.32.32:8000/api/hy",
+    timeout: 5000
+  })
+  
+  return getdata(config)
+}
