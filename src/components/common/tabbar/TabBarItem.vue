@@ -1,5 +1,4 @@
-
-<!-- TabBarItrm -->
+<!-- TabBarItem -->
 <template>
   <div class="tab-bar-item" @click="itemClick">
     <div v-if = "!isactive">
@@ -26,7 +25,7 @@ export default {
   props: {
     path: String,
     activeColor: {
-      tybe: String,
+      type: String,
       default: "#ff5777"
     }
   },
@@ -44,7 +43,10 @@ export default {
 
   methods: {
     itemClick() {
-      this.$router.replace(this.path)
+      // console.log(this.$route.path);
+      if(this.$route.path.indexOf(this.path)){
+        this.$router.replace(this.path)
+      }
     }
   }
 };

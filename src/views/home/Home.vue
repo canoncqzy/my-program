@@ -147,17 +147,16 @@ export default {
   mounted() {
     const refresh = debounce(this.$refs.scroll.refresh, 500);
     this.$bus.$on("ItemImgLoad", () => {
-      // this.$refs.scroll.refresh()
-      // this.debounce(this.$refs.scroll.refresh);
       refresh();
     });
   },
   activated() {
-    this.$refs.scroll.scrollTo(0,this.saveY,0)
+    this.$refs.scroll.scrollTo(0,this.saveY)
     this.$refs.scroll.refresh
   },
   deactivated() {
     this.saveY = this.$refs.scroll.scroll.y
+    // console.log(this.saveY);
   },
 };
 </script>
@@ -177,11 +176,8 @@ export default {
   z-index: 999;
 }
 .content {
-  /* height: 300px; */
-  /* overflow: hidden; */
-  position: absolute;
-  top: 44px;
-  bottom: 49px;
+   height: calc(100% - 44px);
+  overflow: hidden;
 }
 .tab-control {
   position: relative;
