@@ -2,10 +2,16 @@
 <template>
   <div id="detail">
     <main-nav-bar class="detail-navbar"></main-nav-bar>
-    <bscroll class="content">
+    <bscroll class="content" ref="scroll">
       <detail-swiper :topImages="topImages"></detail-swiper>
       <detail-infor :Information="information"></detail-infor>
       <shop-info :shop="shop"></shop-info>
+      <detail-image-info :detailInfo = "detailInfo"></detail-image-info>
+      <detail-params :detail-params="detailParams"></detail-params>
+      <detail-comment-info :commentInfo="commentInfo"/>
+      <goods-list :goods="recommends">
+        <goods-list></goods-list>
+      </goods-list>
     </bscroll>
   </div>
 </template>
@@ -15,10 +21,18 @@ import MainNavBar from "./childcomps/MainNavBar";
 import DetailSwiper from "./childcomps/DetailSwiper";
 import DetailInfor from "./childcomps/DetailInfor";
 import ShopInfo from "./childcomps/ShopInfo";
+import DetailImageInfo from "./childcomps/DetailImageInfo";
+import DetailParams from "./childcomps/DetailParams";
+import DetailCommentInfo from "./childcomps/DetailCommentInfo";
 
 import Bscroll from "components/common/scroll/Bscroll";
+import GoodsList from "components/content/goods/GoodsList";
+import GoodsListItem from "components/content/goods/GoodsListItem";
 
-import { getDetailData, Information, GoodsParam, Shop } from "network/detail";
+import { getDetailData, Information, GoodsParam, Shop, getRecommend } from "network/detail";
+import {debounce} from "common/utils";
+import {itemListenerMixin} from "common/mixin";
+
 export default {
   name: "Detail",
   data() {
@@ -27,15 +41,25 @@ export default {
       topImages: [],
       information: {},
       goodsParam: {},
-      shop: {}
+      shop: {},
+      detailInfo: {},
+      detailParams: {},
+      commentInfo: {},
+      recommends: [],
     };
   },
+  mixins: [itemListenerMixin],
   components: {
     MainNavBar,
     DetailSwiper,
     DetailInfor,
     ShopInfo,
-    Bscroll
+    Bscroll,
+    DetailImageInfo,
+    DetailParams,
+    DetailCommentInfo,
+    GoodsList,
+    GoodsListItem
   },
 
   computed: {},
@@ -53,12 +77,29 @@ export default {
       )
       // this.goodsParam = new GoodsParam(data.itemInfo, data.columns, data.shopInfo.services)
       this.shop = new Shop(data.shopInfo);
+      // 取出详情页的信息
+      this.detailInfo = data.detailInfo
+      // 取出参数参数信息
+      this.detailParams = data.itemParams
+      // 取出评论信息
+      if(data.rate.cRate !== 0) {
+        this.commentInfo = data.rate
+      }
     }).catch(err => {
         console.log("获取数据失败")
-      });;
+      });
+    //请求推荐数据
+    getRecommend().then(res => {
+      const data = res.data.data.list
+      this.recommends = data
+      // console.log(data);
+    }).catch(err => {
+      console.log("获取推荐数据错误");
+    })
   },
-
-  methods: {}
+  destroyed() {
+    this.$bus.$off('itemImgLoad', this.itemImgListener)
+  }
 };
 </script>
 <style lang='css' scoped>

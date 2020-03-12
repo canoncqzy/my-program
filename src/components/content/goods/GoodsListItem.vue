@@ -1,7 +1,7 @@
 <!-- GoodsListItem -->
 <template>
   <div class="goods-item" @click="ItemClick">
-      <img :src="goodsItem.show.img" @load="imgLoad" />
+      <img :src="showImage" @load="imgLoad" />
       <div class="goods-info">
         <p>{{ goodsItem.title }}</p>
         <span class="price">{{ goodsItem.price }}</span>
@@ -24,11 +24,11 @@ export default {
       }
     }
   },
-
-  components: {},
-
-  computed: {},
-
+  computed: {
+    showImage() {
+      return this.goodsItem.image|| this.goodsItem.show.img
+    }
+  },
   methods: {
     imgLoad() {
       this.$bus.$emit("ItemImgLoad")
