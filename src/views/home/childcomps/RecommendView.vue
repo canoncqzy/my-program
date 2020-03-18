@@ -3,7 +3,7 @@
   <div class="recommend">
     <div class="recommend-item" v-for="(item,index) in recommends" :key="index">
       <a :href="item.linnk">
-        <img :src="item.image" alt />
+        <img v-lazy="item.image" alt />
         <div>{{ item.title }}</div>
       </a>
     </div>
@@ -18,7 +18,7 @@ export default {
   },
   props: {
     recommends: {
-      tybe: Array,
+      type: Array,
       default() {
         return [];
       }
@@ -38,7 +38,7 @@ export default {
     text-align: center;
     padding: 8px 0 15px 0;
     border-bottom: 10px solid #eee;
-    height: 100%; 
+    height: 100%;
 }
 .recommend-item {
     flex: 1;
@@ -47,6 +47,6 @@ export default {
 .recommend-item img{
     height: 70px;
     width: 70px;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 </style>

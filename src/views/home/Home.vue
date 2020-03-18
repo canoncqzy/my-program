@@ -162,7 +162,7 @@
     deactivated() {
       //保留Y值
       this.saveY = this.$refs.scroll.scroll.y
-      console.log(this.saveY);
+      // console.log(this.saveY);
       // 取消全局事件监听
       this.$bus.$off('ItemImgLoad', this.itemImgListener)
     },
@@ -170,7 +170,7 @@
 </script>
 <style scoped>
   #home {
-    padding-top: 44px;
+    /*padding-top: 44px;*/
     height: 100vh;
     position: relative;
   }
@@ -178,15 +178,14 @@
   .home-nav {
     background: var(--color-tint);
     color: white;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 999;
   }
 
   .content {
-    height: calc(100% - 44px);
+    position: absolute;
+    top: 44px;
+    right: 0;
+    bottom: 50px;
+    left: 0;
     overflow: hidden;
   }
 

@@ -3,13 +3,14 @@ import {debounce} from "./utils";
 export const itemListenerMixin = {
   data() {
     return {
-      itemImgListener: null
+      itemImgListener: null,
+      newRefresh: null
     }
   },
   mounted() {
-    let newRefresh = debounce(this.$refs.scroll.refresh,100)
+    this.newRefresh = debounce(this.$refs.scroll.refresh,100)
     this.itemImgListener = () => {
-      newRefresh()
+      this.newRefresh()
     };
     this.$bus.$on('itemImgLoad', this.itemImgListener);
   }
