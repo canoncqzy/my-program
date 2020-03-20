@@ -11,7 +11,7 @@ Vue.use(vant);
 import { Lazyload } from 'vant';
 // Vue.use(Lazyload);
 Vue.use(Lazyload, {
-  loading: "./assets/img/common/placeholder.png"
+  loading: require("assets/img/common/placeholder.png")
 });
 
 Vue.config.productionTip = false

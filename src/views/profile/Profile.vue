@@ -1,27 +1,27 @@
 <template>
   <div class="profile">
     <nav-bar class="nav-bar">
-      <div slot="center">啦啦操商城</div>
+      <div slot="center">蘑菇街</div>
     </nav-bar>
-    <scroll class="scroll-height">
+    <bscroll class="scroll-height">
       <login />
       <money />
       <div class="line"></div>
       <profile-list />
-    </scroll>
+    </bscroll>
   </div>
 </template>
 
 <script>
-import NavBar from "@/components/common/navbar/NavBar";
+import NavBar from "components/common/navbar/NavBar";
 import Login from "./children/Login";
 import Money from "./children/Money";
 import ProfileList from "./children/profileList";
-import Scroll from "@/components/common/scroll/Scroll";
+import Bscroll from "../../components/common/scroll/Bscroll";
 
 export default {
   name: "Profile",
-  components: { Scroll, ProfileList, Money, Login, NavBar }
+  components: { Bscroll, ProfileList, Money, Login, NavBar }
 };
 </script>
 

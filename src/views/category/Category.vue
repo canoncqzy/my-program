@@ -6,10 +6,10 @@
       <slide-bar :slideList="categoryList"
                  @slideBarItemClick='slideBarItemClick'/>
       <!--  右侧内容    -->
-      <bscroll class="content-area">
+      <bscroll class="content-area" ref="scroll">
         <sub-category :subCategoryList="subList"/>
-        <tab-control :titles="titleList"/>
-        <goods-list @tabClick="tabClick" :goods="categoryDetailList[currentType]"/>
+        <tab-control :titles="titleList" @tabClick="tabClick" ref="tabControl"/>
+        <goods-list :goods="categoryDetailList[currentType]"/>
       </bscroll>
     </div>
   </div>
@@ -58,9 +58,15 @@
     },
     methods: {
       slideBarItemClick(obj) {
+        // 回到顶部
+        this.$refs.scroll.scrollTo(0,0,0)
+        //获取数据
         this.currentIndex = obj.index
+        this.$refs.tabControl.isActive = 0
         this.getSubcategory(obj.maitKey, obj.index)
         this.getCategoryDetail(this.categoryList[this.currentIndex].miniWallkey, "pop");
+        this.getCategoryDetail(this.categoryList[this.currentIndex].miniWallkey, "new");
+        this.getCategoryDetail(this.categoryList[this.currentIndex].miniWallkey, "sell");
       },
       //  获取数据
       getCategory() {
@@ -68,6 +74,8 @@
           this.categoryList = res.data.category.list
           this.getSubcategory(this.categoryList[0].maitKey, 0)
           this.getCategoryDetail(this.categoryList[0].miniWallkey, "pop");
+          this.getCategoryDetail(this.categoryList[0].miniWallkey, "new");
+          this.getCategoryDetail(this.categoryList[0].miniWallkey, "sell");
         })
       },
       getSubcategory(maitKey, index) {
@@ -77,12 +85,24 @@
       },
       getCategoryDetail(miniWallkey, type) {
         getCategoryDetail(miniWallkey, type).then(res => {
-          this.categoryDetailList[type].push(...res)
+          this.categoryDetailList[type] = res
+          // this.categoryDetailList[type].push(...res)
         })
       },
       tabClick(index) {
-        const typeList = ["pop", "new", "sell"]
-        this.getCategoryDetail(this.categoryList[this.currentIndex].miniWallkey, typeList[index]);
+        // const typeList = ["pop", "new", "sell"]
+        switch (index) {
+          case 0:
+            this.currentType = "pop";
+            break;
+          case 1:
+            this.currentType = "new";
+            break;
+          case 2:
+            this.currentType = "sell";
+            break;
+        }
+        // this.getCategoryDetail(this.categoryList[this.currentIndex].miniWallkey, this.currentType);
       }
     },
     created() {
